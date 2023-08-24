@@ -14,8 +14,8 @@ namespace GameEngine {
 
 		static double getDeltaTime() { return m_deltaTime; }
 
-		bool getApplicationShouldClose() { return m_applicationShouldClose; }
-		void setApplicationShouldClose(bool value) { m_applicationShouldClose = value; }
+		bool getApplicationShouldClose();
+		void closeApplication();
 
 		void addScene(Scene* scene);
 		void removeScene(Scene* scene);
@@ -30,8 +30,6 @@ namespace GameEngine {
 		// member variables
 		static double m_deltaTime;
 		static Scene* m_currentScene;
-		bool m_applicationShouldClose = false;
-		List<Scene*> m_scenes;
 	};
 }
 

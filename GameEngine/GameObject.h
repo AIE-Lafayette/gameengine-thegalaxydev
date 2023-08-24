@@ -1,10 +1,11 @@
 #pragma once
 #include "List.h"
+#include <GameMath/Vector2.h>
 
 namespace GameEngine
 {
 	class Component;
-
+	class TransformComponent;
 
 	class GameObject
 	{
@@ -34,6 +35,8 @@ namespace GameEngine
 
 		/// <returns>Whether the game object has started.</returns>
 		bool getStarted() { return m_started; }
+
+		TransformComponent* getTransform() { return m_transform; }
 
 		/// <returns>Whether the game object is enabled.</returns>
 		bool getEnabled() { return m_enabled; }
@@ -77,6 +80,8 @@ namespace GameEngine
 	private:
 		bool m_enabled;
 		bool m_started;
+
+		TransformComponent* m_transform;
 
 		List<Component*> m_components;
 	};
