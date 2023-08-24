@@ -11,34 +11,68 @@ namespace GameEngine
 	public:
 		GameObject();
 
+		/// <summary>
+		/// Called at the start before the first update only once.
+		/// </summary>
 		void start();
+
+		/// <summary>
+		/// Called every frame.
+		/// </summary>
+		/// <param name="deltaTime">The time passed between each frame in seconds.</param>
 		void update(double deltaTime);
+
+		/// <summary>
+		/// Called every frame after update.
+		/// </summary>
 		void draw();
+
+		/// <summary>
+		/// Called after the last draw call.
+		/// </summary>
 		void end();
 
+		/// <returns>Whether the game object has started.</returns>
 		bool getStarted() { return m_started; }
-		
-		void addComponent(Component* component);
 
+		/// <returns>Whether the game object is enabled.</returns>
+		bool getEnabled() { return m_enabled; }
+
+		/// <summary>
+		/// Sets the enabled status of the game object. Will call onEnable() and onDisable() accordingly.
+		/// </summary>
+		/// <param name="value">The boolean to set.</param>
+		void setEnabled(bool value);
+		
+		/// <summary>
+		/// Adds a component to the game object given a pre-existing component. 
+		/// </summary>
+		/// <param name="component">The component to provide.</param>
+		void addComponent(Component* component);
+		
+		/// <summary>
+		/// Adds a component to the game object given a type.
+		/// </summary>
+		/// <typeparam name="T">The type of component to add,</typeparam>
+		/// <returns>The component added.</returns>
 		template<typename T>
 		T* addComponent();
 
+		/// <summary>
+		/// Returns a component based on a type provided.
+		/// </summary>
+		/// <typeparam name="T">The type of component to return.</typeparam>
+		/// <returns>The component if found.</returns>
 		template<typename T>
 		T* getComponent();
-
-		/// <summary>
-		/// returns nullptr if the variable can't ne cast as the type
-		/// otherwise, returns a pointer to the variable of the desired cast type.
-		/// dynamic_cast<type>(pointer name)
-		/// </summary>
 
 		virtual void onStart() {}
 		virtual void onUpdate(double deltaTime) {}
 		virtual void onDraw() {}
 		virtual void onEnd() {}
 
-		virtual bool onEnable() { return m_enabled; }
-		virtual void onDisable(bool value) { m_enabled = true; }
+		virtual void onEnable() {}
+		virtual void onDisable() {}
 
 	private:
 		bool m_enabled;
