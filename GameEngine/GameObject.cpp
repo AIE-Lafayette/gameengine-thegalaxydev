@@ -1,9 +1,10 @@
 #include "GameObject.h"
 #include "Component.h"
+#include "TransformComponent.h"
 
 GameEngine::GameObject::GameObject() 
 {
-
+	m_transform = addComponent<TransformComponent>();
 }
 
 void GameEngine::GameObject::start()
@@ -57,30 +58,6 @@ void GameEngine::GameObject::addComponent(Component* component)
 {
 	component->setOwner(this);
 	m_components.add(component);
-}
-
-template<typename T>
-T* GameEngine::GameObject::addComponent()
-{
-	T* component = new T();
-
-	component->setOwner(this);
-	m_components.add(component);
-	
-
-	return (T*)component;
-}
-
-template<typename T>
-T* GameEngine::GameObject::getComponent()
-{
-	for (Component* component : m_components)
-	{
-		if (dynamic_cast<T*>(component))
-			return component;
-	}
-
-	return nullptr;
 }
 
 void GameEngine::GameObject::setEnabled(bool value)

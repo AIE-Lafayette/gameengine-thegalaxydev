@@ -2,6 +2,7 @@
 
 void GameEngine::Scene::start()
 {
+
 	for (GameObject* gameObject : m_gameObjects)
 	{
 		if (gameObject->getEnabled())
@@ -14,6 +15,7 @@ void GameEngine::Scene::start()
 
 void GameEngine::Scene::update(double deltaTime)
 {
+
 	for (GameObject* gameObject : m_gameObjects)
 	{
 		if (gameObject->getEnabled())
@@ -24,29 +26,33 @@ void GameEngine::Scene::update(double deltaTime)
 			gameObject->update(deltaTime);
 		}
 	}
+	
 
 	onUpdate(deltaTime);
 }
 
 void GameEngine::Scene::draw()
 {
+
 	for (GameObject* gameObject : m_gameObjects)
 	{
 		if (gameObject->getEnabled())
 			gameObject->draw();
 	}
+	
 
 	onDraw();
 }
 
 void GameEngine::Scene::end()
 {
+
 	for (GameObject* gameObject : m_gameObjects)
 	{
 		if (gameObject->getEnabled())
 			gameObject->end();
 	}
-
+	
 	onEnd();
 	m_started = false;
 }

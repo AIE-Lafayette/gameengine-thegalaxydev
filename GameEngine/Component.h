@@ -17,13 +17,13 @@ namespace GameEngine
 		virtual void onDisable() {}
 
 		bool getEnabled() { return m_enabled; }
-		void setEnabled(bool value) { m_enabled = value; }
+		void setEnabled(bool value);
 
 		GameObject* getOwner() { return m_owner; }
 
 	private:
 		void setOwner(GameObject* gameObject) { m_owner = gameObject; }
-		bool m_enabled;
+		bool m_enabled = true;
 		GameObject* m_owner = nullptr;
 
 		friend GameObject;

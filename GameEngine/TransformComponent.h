@@ -2,6 +2,8 @@
 #include "Component.h"
 #include <GameMath/Vector3.h>
 #include <GameMath/Matrix4.h>
+#include <GameMath/Vector2.h>
+#include <GameMath/Matrix3.h>
 
 namespace GameEngine
 {
@@ -14,13 +16,21 @@ namespace GameEngine
 		GameMath::Matrix4 getGlobalMatrix();
 
 		void setLocalPosition(GameMath::Vector3 position);
+		void setLocalPosition(GameMath::Vector2 position);
+		void setLocalPosition(float x, float y);
+
 		GameMath::Vector3 getLocalPosition();
 		GameMath::Vector3 getGlobalPosition();
 
 		void setLocalRotation(GameMath::Vector3 rotation);
+		void setLocalRotation(GameMath::Vector2 rotation);
+		void setLocalRotation(float x, float y);
+
 		GameMath::Vector3 getLocalRotation();
 
 		void setLocalScale(GameMath::Vector3 scale);
+		void setLocalScale(GameMath::Vector2 scale);
+		void setLocalScale(float x, float y);
 		GameMath::Vector3 getLocalScale();
 
 		GameMath::Vector3 getGlobalScale();
@@ -30,9 +40,6 @@ namespace GameEngine
 
 	private:
 		void updateMatrices();
-
-
-
 
 	private:
 		GameMath::Matrix4 m_localMatrix;

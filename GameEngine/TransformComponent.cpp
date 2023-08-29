@@ -11,6 +11,17 @@ void GameEngine::TransformComponent::setLocalPosition(GameMath::Vector3 position
 	m_translation = position;
 }
 
+void GameEngine::TransformComponent::setLocalPosition(GameMath::Vector2 position)
+{
+	m_translation = GameMath::Vector3(position.x, position.y, 0.0f);
+}
+
+void GameEngine::TransformComponent::setLocalPosition(float x, float y)
+{
+	m_translation = GameMath::Vector3(x, y, 0.0f);
+}
+
+
 GameMath::Vector3 GameEngine::TransformComponent::getLocalPosition()
 {
 	updateMatrices();
@@ -22,6 +33,16 @@ void GameEngine::TransformComponent::setLocalRotation(GameMath::Vector3 rotation
 	m_rotation = rotation;
 }
 
+void GameEngine::TransformComponent::setLocalRotation(GameMath::Vector2 rotation)
+{
+	m_rotation = GameMath::Vector3(rotation.x, rotation.y, 0.0f);
+}
+
+void GameEngine::TransformComponent::setLocalRotation(float x, float y)
+{
+	m_rotation = GameMath::Vector3(x, y, 0.0f);
+}
+
 GameMath::Vector3 GameEngine::TransformComponent::getLocalRotation()
 {
 	updateMatrices();
@@ -31,6 +52,16 @@ GameMath::Vector3 GameEngine::TransformComponent::getLocalRotation()
 void GameEngine::TransformComponent::setLocalScale(GameMath::Vector3 scale)
 {
 	m_scale = scale;
+}
+
+void GameEngine::TransformComponent::setLocalScale(GameMath::Vector2 scale)
+{
+	m_scale = GameMath::Vector3(scale.x, scale.y, 0.0f);
+}
+
+void GameEngine::TransformComponent::setLocalScale(float x, float y)
+{
+	m_scale = GameMath::Vector3(x,y, 0.0f);
 }
 
 GameMath::Vector3 GameEngine::TransformComponent::getLocalScale()

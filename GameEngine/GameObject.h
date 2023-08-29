@@ -78,11 +78,36 @@ namespace GameEngine
 		virtual void onDisable() {}
 
 	private:
-		bool m_enabled;
+		bool m_enabled = true;
 		bool m_started;
 
 		TransformComponent* m_transform;
 
 		List<Component*> m_components;
 	};
+}
+
+
+template<typename T>
+T* GameEngine::GameObject::addComponent()
+{
+	T* component = new T();
+
+	component->setOwner(this);
+	m_components.add(component);
+
+
+	return (T*)component;
+}
+
+template<typename T>
+T* GameEngine::GameObject::getComponent()
+{
+	for (Component* component : m_components)
+	{
+		if (dynamic_cast<T*>(component))
+			return component;
+	}
+
+	return nullptr;
 }
