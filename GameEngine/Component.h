@@ -1,12 +1,14 @@
 #pragma once
 #include "GameObject.h"
 
+
+
 namespace GameEngine
 {
 	class Component
 	{
 	public:
-		Component() {}
+		Component() { m_enabled = true; }
 
 		virtual void start() {}
 		virtual void update(double deltaTime) {}
@@ -15,6 +17,8 @@ namespace GameEngine
 
 		virtual void onEnable() {}
 		virtual void onDisable() {}
+
+		virtual void onCollision(GamePhysics::Collision* collision) {}
 
 		bool getEnabled() { return m_enabled; }
 		void setEnabled(bool value);

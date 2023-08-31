@@ -1,5 +1,11 @@
 #pragma once
 #include "GameObject.h"
+
+namespace GamePhysics
+{
+	class ColliderComponent;
+}
+
 namespace GameEngine
 {
 	class Scene
@@ -20,9 +26,13 @@ namespace GameEngine
 		void addGameObject(GameObject* gameObject);
 		void removeGameObject(GameObject* gameObject);
 
+		void addActiveCollider(GamePhysics::ColliderComponent* activeCollider);
+		void removeActiveCollider(GamePhysics::ColliderComponent* activeCollider);
+
 	private:
 		List<GameObject*> m_gameObjects;
 		bool m_started;
+		List<GamePhysics::ColliderComponent*> m_activeColliders;
 	};
 }
 

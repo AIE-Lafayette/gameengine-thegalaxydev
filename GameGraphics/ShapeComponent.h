@@ -1,6 +1,8 @@
 #pragma once
-#include "Component.h"
-#include "TransformComponent.h"
+
+#include "GameEngine/TransformComponent.h"
+#include "GameEngine/Component.h"
+
 
 namespace GameGraphics
 {

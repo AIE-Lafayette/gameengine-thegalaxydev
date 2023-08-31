@@ -2,6 +2,11 @@
 #include "List.h"
 #include <GameMath/Vector2.h>
 
+namespace GamePhysics
+{
+	struct Collision;
+}
+
 namespace GameEngine
 {
 	class Component;
@@ -77,6 +82,8 @@ namespace GameEngine
 		virtual void onEnable() {}
 		virtual void onDisable() {}
 
+		virtual void onCollision(GamePhysics::Collision* collision);
+
 	private:
 		bool m_enabled = true;
 		bool m_started;
@@ -103,11 +110,12 @@ T* GameEngine::GameObject::addComponent()
 template<typename T>
 T* GameEngine::GameObject::getComponent()
 {
+	T* result = nullptr;
 	for (Component* component : m_components)
 	{
-		if (dynamic_cast<T*>(component))
-			return component;
+		if (result = dynamic_cast<T*>(component))
+			break;
 	}
 
-	return nullptr;
+	return result;
 }

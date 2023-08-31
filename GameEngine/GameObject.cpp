@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "TransformComponent.h"
+#include <GamePhysics/ColliderComponent.h>
 
 GameEngine::GameObject::GameObject() 
 {
@@ -68,4 +69,13 @@ void GameEngine::GameObject::setEnabled(bool value)
 		onDisable();
 
 	m_enabled = value;
+}
+
+void GameEngine::GameObject::onCollision(GamePhysics::Collision* collision)
+{
+	for (Component* component : m_components)
+	{
+		if (component->getEnabled())
+			component->onCollision(collision);
+	}
 }
