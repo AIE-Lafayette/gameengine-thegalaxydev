@@ -26,10 +26,7 @@ namespace GamePhysics
 		Collision* checkCollision(ColliderComponent* other);
 
 		virtual Collision* checkCollisionCircle(CircleColliderComponent* other) = 0;
-		virtual Collision* checkCollisionCircle(AABBColliderComponent* other) = 0;
-
 		virtual Collision* checkCollisionAABB(AABBColliderComponent* other) = 0;
-		virtual Collision* checkCollisionAABB(CircleColliderComponent* other) = 0;
 
 		bool getIsTrigger() { return m_isTrigger; }
 		void setIsTrigger(bool value) { m_isTrigger = value; }

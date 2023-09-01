@@ -9,7 +9,9 @@ namespace GameGraphics
     enum ShapeType
     {
         CIRCLE,
-        BOX
+        BOX,
+        CUBE,
+        SPHERE
     };
     class ShapeComponent :
         public GameEngine::Component

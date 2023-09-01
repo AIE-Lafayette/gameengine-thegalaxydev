@@ -8,18 +8,29 @@ namespace GamePhysics
     {
         public:
 		AABBColliderComponent() {}
+		AABBColliderComponent(GameMath::Vector3 size) { m_size = size; }
+		AABBColliderComponent(GameMath::Vector2 size) { m_size = GameMath::Vector3(size.x, size.y, 0); }
 
 		Collision* checkCollisionCircle(CircleColliderComponent* other) override;
-		Collision* checkCollisionCircle(AABBColliderComponent* other) override;
-
 		Collision* checkCollisionAABB(AABBColliderComponent* other) override;
-		Collision* checkCollisionAABB(CircleColliderComponent* other) override;
 
-		GameMath::Vector3 getHalfSize() { return m_halfSize; }
-		void setHalfSize(GameMath::Vector3 value) { m_halfSize = value; }
+		void draw() override;
+
+		float getRight();
+		float getUp();
+		float getFront();
+		float getDown();
+		float getLeft();
+		float getBack();
+
+		GameMath::Vector3 getSize() { return m_size; }
+		void setSize(GameMath::Vector3 value) { m_size = value; }
 
 	private:
-		GameMath::Vector3 m_halfSize;
+		GameMath::Vector3 m_size;
+
+
+
     };
 }
 

@@ -20,24 +20,16 @@ GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionCirc
 	collisionData->penetration = getRadius() + other->getRadius() - distance;
 }
 
-GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionCircle(AABBColliderComponent* other)
-{
-	return nullptr;
-}
-
 GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionAABB(AABBColliderComponent* other)
 {
 	return nullptr;
 }
 
-GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionAABB(CircleColliderComponent* other)
-{
-	return nullptr;
-}
 
 void GamePhysics::CircleColliderComponent::draw()
 {
 	GameMath::Vector3 position = getOwner()->getTransform()->getGlobalPosition();
 
-	RAYLIB_H::DrawCircleLines(position.x, position.y, getRadius(), RAYLIB_H::GetColor(getColor()));
+	RAYLIB_H::Vector3 newPos = { position.x, position.y, position.z };
+	RAYLIB_H::DrawSphereWires(newPos, getRadius(), 32, 32, RAYLIB_H::GetColor(getColor()));
 }

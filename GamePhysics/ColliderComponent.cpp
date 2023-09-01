@@ -22,23 +22,12 @@ GamePhysics::Collision* GamePhysics::ColliderComponent::checkCollision(GamePhysi
 {
 	switch (getColliderType())
 	{
-		case CIRCLE:
-			switch (other->getColliderType())
-			{
-			case CIRCLE:
-				return checkCollisionCircle((CircleColliderComponent*)other);
-			case AABB:
-				return checkCollisionCircle((AABBColliderComponent*)other);
-			}
-		case AABB:
-			switch (other->getColliderType())
-			{
-			case CIRCLE:
-				return checkCollisionAABB((CircleColliderComponent*)other);
-			case AABB:
-				return checkCollisionAABB((AABBColliderComponent*)other);
-			}
-		break;
+	case CIRCLE:
+		return checkCollisionCircle((CircleColliderComponent*)other);
+	case AABB:
+		return checkCollisionAABB((AABBColliderComponent*)other);
+
+	break;
 	}
 
 	return nullptr;
