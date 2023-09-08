@@ -31,6 +31,17 @@ void GameEngine::GameObject::update(double deltaTime)
 	onUpdate(deltaTime);
 }
 
+void GameEngine::GameObject::fixedUpdate()
+{
+	for (Component* component : m_components)
+	{
+		if (component->getEnabled())
+			component->fixedUpdate();
+	}
+
+	onFixedUpdate();
+}
+
 void GameEngine::GameObject::draw()
 {
 	for (Component* component : m_components)

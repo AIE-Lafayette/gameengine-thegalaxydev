@@ -1,5 +1,6 @@
 #include "RigidBodyComponent.h"
 #include "GameEngine/TransformComponent.h"
+#include "ColliderComponent.h"
 
 void GamePhysics::RigidBodyComponent::applyForce(GameMath::Vector3 force)
 {
@@ -43,6 +44,31 @@ void GamePhysics::RigidBodyComponent::applyForceToGameObject(RigidBodyComponent*
 {
 	applyForce(force * -1);
 	other->applyForce(force);
+}
+
+void GamePhysics::RigidBodyComponent::resolveCollision(GamePhysics::Collision* collisionData)
+{
+	float averageElasticity = (getElasticity() + collisionData->collider->getRigidBody()->getElasticity()) / 2;
+
+	GameMath::Vector3 velocity = getVelocity3D();
+	GameMath::Vector3 otherVelocity = collisionData->collider->getRigidBody()->getVelocity3D();
+
+	GameMath::Vector3 normal = collisionData->normal;
+	float mass = getMass();
+	
+	if (mass == 0)
+		mass = 10e-12;
+
+	float otherMass = collisionData->collider->getRigidBody()->getMass();
+
+	if (otherMass == 0)
+		otherMass = 10e-12;
+
+	float dotProduct = GameMath::Vector3::dotProduct(velocity - otherVelocity, normal);
+
+	float impulse = (-(1 + averageElasticity) * dotProduct) / (1 / mass + 1 / otherMass);
+
+	applyForceToGameObject(collisionData->collider->getRigidBody(), normal * -impulse);
 }
 
 void GamePhysics::RigidBodyComponent::update(double deltaTime)

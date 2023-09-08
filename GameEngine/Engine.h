@@ -13,6 +13,7 @@ namespace GameEngine {
 		static Scene* getCurrentScene() { return m_currentScene; }
 
 		static double getDeltaTime() { return m_deltaTime; }
+		static double getFixedTime() { return m_fixedTimeStep; }
 
 		bool getApplicationShouldClose();
 		void closeApplication();
@@ -26,9 +27,11 @@ namespace GameEngine {
 		void update(double deltaTime);
 		void draw();
 		void end();
+		void fixedUpdate();
 
 		// member variables
 		static double m_deltaTime;
+		static double m_fixedTimeStep;
 		static Scene* m_currentScene;
 	};
 }

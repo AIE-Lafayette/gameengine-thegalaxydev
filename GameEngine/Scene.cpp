@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "GamePhysics/ColliderComponent.h"
+#include "GamePhysics/RigidBodyComponent.h"
 
 void GameEngine::Scene::start()
 {
@@ -31,14 +32,32 @@ void GameEngine::Scene::update(double deltaTime)
 	
 
 	onUpdate(deltaTime);
+}
 
-	for (GamePhysics::ColliderComponent* collider1 : m_activeColliders)
+void GameEngine::Scene::fixedUpdate()
+{
+
+	for (GameObject* gameObject : m_gameObjects)
 	{
-		for (GamePhysics::ColliderComponent* collider2 : m_activeColliders)
+		if (gameObject->getEnabled())
 		{
-			if (collider1 == collider2)
+			if (!gameObject->getStarted())
+				gameObject->start();
+
+			gameObject->fixedUpdate();
+		}
+	}
+
+	for (auto iterator1 = m_activeColliders.begin(); iterator1 != m_activeColliders.end(); iterator1++)
+	{
+		for (auto iterator2 = iterator1; iterator2 != m_activeColliders.end(); iterator2++)
+		{
+			if (iterator1 == iterator2)
 				continue;
-			
+
+			GamePhysics::ColliderComponent* collider1 = *iterator1;
+			GamePhysics::ColliderComponent* collider2 = *iterator2;
+
 			if (!collider2->getOwner()->getEnabled())
 				continue;
 
@@ -52,13 +71,18 @@ void GameEngine::Scene::update(double deltaTime)
 			{
 				collider1->getOwner()->onCollision(collisionData1);
 
-				collisionData2->collider = collider1;  
+				collisionData2->collider = collider1;
 				collisionData2->normal = collisionData1->normal * -1.0f;
 
 				collider2->getOwner()->onCollision(collisionData2);
+
+				collider1->getRigidBody()->resolveCollision(collisionData1);
 			}
 		}
 	}
+	
+
+	onFixedUpdate();
 }
 
 void GameEngine::Scene::draw()

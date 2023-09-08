@@ -12,6 +12,7 @@ namespace GameEngine
 
 		virtual void start() {}
 		virtual void update(double deltaTime) {}
+		virtual void fixedUpdate() {}
 		virtual void draw() {}
 		virtual void end() {}
 

@@ -28,6 +28,12 @@ namespace GameEngine
 		/// <param name="deltaTime">The time passed between each frame in seconds.</param>
 		void update(double deltaTime);
 
+
+		/// <summary>
+		/// Called every fixed frame for physics calculations.
+		/// </summary>
+		void fixedUpdate();
+
 		/// <summary>
 		/// Called every frame after update.
 		/// </summary>
@@ -76,6 +82,7 @@ namespace GameEngine
 
 		virtual void onStart() {}
 		virtual void onUpdate(double deltaTime) {}
+		virtual void onFixedUpdate() {}
 		virtual void onDraw() {}
 		virtual void onEnd() {}
 

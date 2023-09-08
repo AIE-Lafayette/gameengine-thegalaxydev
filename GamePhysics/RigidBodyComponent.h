@@ -29,6 +29,10 @@ namespace GamePhysics
         float getGravity() { return m_gravity; }
         void setGravity(float value) { m_gravity = value; }
 
+        // Elasticity
+        float getElasticity() { return m_elasticity; }
+        void setElasticity(float value) { m_elasticity = value; }
+
         void applyForce(GameMath::Vector3 force);
         void applyForce(GameMath::Vector2 force);
         void applyForce(float x, float y, float z);
@@ -42,10 +46,12 @@ namespace GamePhysics
         bool getIsKinematic() { return m_isKinematic; }
         void setIsKinematic(bool value) { m_isKinematic = value; }
 
+        void resolveCollision(GamePhysics::Collision* collisionData);
+
     private:
         float m_mass = 1;
         float m_gravity = 9.81f;
-
+        float m_elasticity = 0;
         GameMath::Vector3 m_velocity = GameMath::Vector3();
 
         bool m_isKinematic = false;

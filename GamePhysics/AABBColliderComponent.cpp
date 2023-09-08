@@ -3,7 +3,7 @@
 #include "GameEngine/TransformComponent.h"
 #include <Raylib/raylib.h>
 
-int clamp(int value, int min, int max)
+inline int clamp(int value, int min, int max)
 {
 	if (value < min)
 		return min;
@@ -12,7 +12,6 @@ int clamp(int value, int min, int max)
 
 	return value;
 }
-
 
 GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionCircle(CircleColliderComponent* other)
 {
@@ -31,7 +30,7 @@ GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionCircle
 		return nullptr;
 
 	Collision* collisionData = new Collision();
-	collisionData->collider = this;
+	collisionData->collider = other;
 	collisionData->normal = (position2 - closestPoint).getNormalized();
 	collisionData->penetration = other->getRadius() - distance;
 
@@ -50,10 +49,15 @@ GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionAABB(A
 	if (!isColliding)
 		return nullptr;
 
+	GameMath::Vector3 position1 = getOwner()->getTransform()->getGlobalPosition();
+	GameMath::Vector3 position2 = other->getOwner()->getTransform()->getGlobalPosition();
+
 	Collision* collisionData = new Collision();
-	collisionData->collider = this;
-	collisionData->normal = GameMath::Vector3(0, 0, 0);
+	collisionData->collider = other;
+	collisionData->normal = (position2 - position1).getNormalized();
 	collisionData->penetration = 0;
+
+	return collisionData;
 }
 
 float GamePhysics::AABBColliderComponent::getRight()

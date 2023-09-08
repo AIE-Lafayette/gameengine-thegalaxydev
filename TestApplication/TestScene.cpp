@@ -12,19 +12,20 @@ void TestScene::onStart()
 	circle = new GameEngine::GameObject();
 
 	GameGraphics::ShapeComponent* shapeComponent = circle->addComponent<GameGraphics::ShapeComponent>();
-	shapeComponent->setShapeType(GameGraphics::SPHERE);
+	shapeComponent->setShapeType(GameGraphics::CIRCLE);
 
 	GamePhysics::RigidBodyComponent* rigidBody = circle->addComponent<GamePhysics::RigidBodyComponent>();
 	circle->addComponent<GamePhysics::CircleColliderComponent>()->setRadius(30);
+	rigidBody->setGravity(0);
+	rigidBody->setMass(20);
 
 	box = new GameEngine::GameObject();
 	box->addComponent<GameGraphics::ShapeComponent>()->setShapeType(GameGraphics::CUBE);
 
 	GamePhysics::RigidBodyComponent* rigidBody2 = box->addComponent<GamePhysics::RigidBodyComponent>();
 	box->addComponent<GamePhysics::AABBColliderComponent>()->setSize({ 30, 30, 0 });
-	rigidBody2->setGravity(0);
 
-	circle->getTransform()->setLocalPosition({ 100.0f, 150.0f });
+	circle->getTransform()->setLocalPosition({ 100.0f, 400.0f });
 	circle->getTransform()->setLocalScale({ 25.0f, 25.0f, 0.0f });
 
 	box->getTransform()->setLocalPosition({ 100.0f, 200.0f });
@@ -37,13 +38,5 @@ void TestScene::onStart()
 double elapsed = 0;
 void TestScene::onUpdate(double deltaTime)
 {
-	elapsed += deltaTime;
 
-	if (elapsed > 0.75)
-	{
-		elapsed = 0;
-		GamePhysics::RigidBodyComponent* rigidBody = circle->getComponent<GamePhysics::RigidBodyComponent>();
-		rigidBody->setVelocity2D({ 0, 0 });
-		rigidBody->setGravity(-rigidBody->getGravity());
-	}
 }

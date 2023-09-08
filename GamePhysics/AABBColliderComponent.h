@@ -26,6 +26,7 @@ namespace GamePhysics
 		GameMath::Vector3 getSize() { return m_size; }
 		void setSize(GameMath::Vector3 value) { m_size = value; }
 
+
 	private:
 		GameMath::Vector3 m_size;
 
