@@ -48,6 +48,8 @@ void GameEngine::Scene::fixedUpdate()
 		}
 	}
 
+	onFixedUpdate();
+
 	for (auto iterator1 = m_activeColliders.begin(); iterator1 != m_activeColliders.end(); iterator1++)
 	{
 		for (auto iterator2 = iterator1; iterator2 != m_activeColliders.end(); iterator2++)
@@ -69,20 +71,20 @@ void GameEngine::Scene::fixedUpdate()
 
 			if (collisionData1 = collider1->checkCollision(collider2))
 			{
+				collider1->getRigidBody()->resolveCollision(collisionData1);
+
 				collider1->getOwner()->onCollision(collisionData1);
 
 				collisionData2->collider = collider1;
 				collisionData2->normal = collisionData1->normal * -1.0f;
 
 				collider2->getOwner()->onCollision(collisionData2);
-
-				collider1->getRigidBody()->resolveCollision(collisionData1);
 			}
 		}
 	}
 	
 
-	onFixedUpdate();
+	
 }
 
 void GameEngine::Scene::draw()

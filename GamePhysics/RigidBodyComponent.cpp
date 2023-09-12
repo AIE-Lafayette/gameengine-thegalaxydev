@@ -71,7 +71,7 @@ void GamePhysics::RigidBodyComponent::applyContactForce(GamePhysics::Collision* 
 
 void GamePhysics::RigidBodyComponent::resolveCollision(GamePhysics::Collision* collisionData)
 {
-	//applyContactForce(collisionData);
+	applyContactForce(collisionData);
 	GamePhysics::RigidBodyComponent* current = this;
 	GamePhysics::RigidBodyComponent* other = collisionData->collider->getRigidBody();
 	float averageElasticity = (getElasticity() + collisionData->collider->getRigidBody()->getElasticity()) / 2;
@@ -105,10 +105,10 @@ void GamePhysics::RigidBodyComponent::update(double deltaTime)
 
 void GamePhysics::RigidBodyComponent::fixedUpdate()
 {
-	applyForce(GameMath::Vector3(0, getGravity(), 0));
-
 	GameMath::Vector3 position = getOwner()->getTransform()->getLocalPosition();
 	getOwner()->getTransform()->setLocalPosition(position + getVelocity3D() * GameEngine::Engine::getFixedDeltaTime());
+
+	applyForce(GameMath::Vector3(0, getGravity(), 0));
 }
 
 float GamePhysics::RigidBodyComponent::getMass()
