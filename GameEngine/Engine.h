@@ -13,7 +13,7 @@ namespace GameEngine {
 		static Scene* getCurrentScene() { return m_currentScene; }
 
 		static double getDeltaTime() { return m_deltaTime; }
-		static double getFixedTime() { return m_fixedTimeStep; }
+		static double getFixedDeltaTime() { return m_fixedTimeStep; }
 
 		bool getApplicationShouldClose();
 		void closeApplication();

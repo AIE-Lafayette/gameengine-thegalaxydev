@@ -6,13 +6,15 @@ namespace GamePhysics
     class AABBColliderComponent :
         public ColliderComponent
     {
-        public:
-		AABBColliderComponent() {}
-		AABBColliderComponent(GameMath::Vector3 size) { m_size = size; }
-		AABBColliderComponent(GameMath::Vector2 size) { m_size = GameMath::Vector3(size.x, size.y, 0); }
+     public:
+		AABBColliderComponent();
+		AABBColliderComponent(GameMath::Vector3 size);
+		AABBColliderComponent(GameMath::Vector2 size);
 
 		Collision* checkCollisionCircle(CircleColliderComponent* other) override;
 		Collision* checkCollisionAABB(AABBColliderComponent* other) override;
+
+		GameMath::Vector3 getPenetrationVector(AABBColliderComponent* other);
 
 		void draw() override;
 

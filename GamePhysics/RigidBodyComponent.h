@@ -41,7 +41,10 @@ namespace GamePhysics
         void applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector3 force);
         void applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector2 force);
 
+        void applyContactForce(GamePhysics::Collision* other);
+
         void update(double deltaTime) override;
+        void fixedUpdate() override;
 
         bool getIsKinematic() { return m_isKinematic; }
         void setIsKinematic(bool value) { m_isKinematic = value; }

@@ -20,7 +20,7 @@ void GamePhysics::ColliderComponent::start()
 
 GamePhysics::Collision* GamePhysics::ColliderComponent::checkCollision(GamePhysics::ColliderComponent* other)
 {
-	switch (getColliderType())
+	switch (other->getColliderType())
 	{
 	case CIRCLE:
 		return checkCollisionCircle((CircleColliderComponent*)other);

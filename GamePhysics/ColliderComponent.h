@@ -31,8 +31,8 @@ namespace GamePhysics
 		bool getIsTrigger() { return m_isTrigger; }
 		void setIsTrigger(bool value) { m_isTrigger = value; }
 
-		ColliderType getColliderType() { return m_collisionType; }
-		void setColliderType(ColliderType value) { m_collisionType = value; }
+		ColliderType getColliderType() { return m_colliderType; }
+		void setColliderType(ColliderType value) { m_colliderType = value; }
 
 		unsigned int getColor() { return m_color; }
 
@@ -43,7 +43,7 @@ namespace GamePhysics
 		void update(double deltaTime) override;
 
 	private:
-		ColliderType m_collisionType;
+		ColliderType m_colliderType;
 
 		bool m_isTrigger;
 
@@ -57,7 +57,8 @@ namespace GamePhysics
 	public:
 		ColliderComponent* collider;
 		GameMath::Vector3 normal;
-		float penetration;
+		float penetrationDistance;
+		GameMath::Vector3 contactPoint;
 	};
 	
 }

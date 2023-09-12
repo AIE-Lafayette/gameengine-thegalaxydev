@@ -1,6 +1,9 @@
 #include "RigidBodyComponent.h"
 #include "GameEngine/TransformComponent.h"
 #include "ColliderComponent.h"
+#include "GameEngine/Engine.h"
+
+#include <iostream>
 
 void GamePhysics::RigidBodyComponent::applyForce(GameMath::Vector3 force)
 {
@@ -33,6 +36,11 @@ void GamePhysics::RigidBodyComponent::applyForce(float x, float y)
 
 	setVelocity2D(getVelocity2D() + GameMath::Vector2(x, y) / getMass());
 }
+void GamePhysics::RigidBodyComponent::applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector2 force)
+{
+	applyForce(force * -1);
+	other->applyForce(force);
+}
 
 void GamePhysics::RigidBodyComponent::applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector3 force)
 {
@@ -40,18 +48,36 @@ void GamePhysics::RigidBodyComponent::applyForceToGameObject(RigidBodyComponent*
 	other->applyForce(force);
 }
 
-void GamePhysics::RigidBodyComponent::applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector2 force)
+void GamePhysics::RigidBodyComponent::applyContactForce(GamePhysics::Collision* other)
 {
-	applyForce(force * -1);
-	other->applyForce(force);
+	float mass = getMass();
+	float massOther = other->collider->getRigidBody()->getMass();
+
+	float displacement1 = 1;
+
+	float penetrationDistance = other->penetrationDistance;
+
+	if (massOther != INFINITY && !getIsKinematic())
+		displacement1 = massOther / (mass + massOther);
+
+	if (!getIsKinematic())
+	{
+		GameMath::Vector3 position = getOwner()->getTransform()->getLocalPosition();
+		//getOwner()->getTransform()->setLocalPosition(position + other->normal * -penetrationDistance);
+		applyForceToGameObject(other->collider->getRigidBody(), other->normal * displacement1 * penetrationDistance);
+	}
 }
+
 
 void GamePhysics::RigidBodyComponent::resolveCollision(GamePhysics::Collision* collisionData)
 {
+	//applyContactForce(collisionData);
+	GamePhysics::RigidBodyComponent* current = this;
+	GamePhysics::RigidBodyComponent* other = collisionData->collider->getRigidBody();
 	float averageElasticity = (getElasticity() + collisionData->collider->getRigidBody()->getElasticity()) / 2;
 
 	GameMath::Vector3 velocity = getVelocity3D();
-	GameMath::Vector3 otherVelocity = collisionData->collider->getRigidBody()->getVelocity3D();
+	GameMath::Vector3 otherVelocity = other->getVelocity3D();
 
 	GameMath::Vector3 normal = collisionData->normal;
 	float mass = getMass();
@@ -59,24 +85,30 @@ void GamePhysics::RigidBodyComponent::resolveCollision(GamePhysics::Collision* c
 	if (mass == 0)
 		mass = 10e-12;
 
-	float otherMass = collisionData->collider->getRigidBody()->getMass();
+	float otherMass = other->getMass();
 
 	if (otherMass == 0)
 		otherMass = 10e-12;
 
 	float dotProduct = GameMath::Vector3::dotProduct(velocity - otherVelocity, normal);
+	float normalDotProduct = GameMath::Vector3::dotProduct(normal, normal * (1 / mass + 1 / otherMass));
+	// j = (-(1 + e) * dot(vA - vB, n)) / (dot(n,n * (1/mA + 1/mB)))
 
-	float impulse = (-(1 + averageElasticity) * dotProduct) / (1 / mass + 1 / otherMass);
+	float impulse = (-(1 + averageElasticity) * dotProduct) / normalDotProduct;
 
-	applyForceToGameObject(collisionData->collider->getRigidBody(), normal * -impulse);
+	applyForceToGameObject(other, normal * -impulse);
 }
 
 void GamePhysics::RigidBodyComponent::update(double deltaTime)
 {
-	applyForce(GameMath::Vector3(0, getGravity() * getMass(), 0));
-	
+}
+
+void GamePhysics::RigidBodyComponent::fixedUpdate()
+{
+	applyForce(GameMath::Vector3(0, getGravity(), 0));
+
 	GameMath::Vector3 position = getOwner()->getTransform()->getLocalPosition();
-	getOwner()->getTransform()->setLocalPosition(position + getVelocity3D() * deltaTime);
+	getOwner()->getTransform()->setLocalPosition(position + getVelocity3D() * GameEngine::Engine::getFixedDeltaTime());
 }
 
 float GamePhysics::RigidBodyComponent::getMass()

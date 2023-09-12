@@ -15,6 +15,20 @@ inline int clamp(int value, int min, int max)
 	return value;
 }
 
+GamePhysics::CircleColliderComponent::CircleColliderComponent(float radius)
+{
+	m_radius = radius;
+
+	setColliderType(CIRCLE);
+}
+
+GamePhysics::CircleColliderComponent::CircleColliderComponent()
+{
+	m_radius = 1;
+
+	setColliderType(CIRCLE);
+}
+
 
 GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionCircle(CircleColliderComponent* other)
 {
@@ -26,35 +40,22 @@ GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionCirc
 	if (distance > getRadius() + other->getRadius())
 		return nullptr;
 
+	GameMath::Vector3 direction = (position2 - position1).getNormalized();
+
 	Collision* collisionData = new Collision();
 	collisionData->collider = other;
-	collisionData->normal = (position2 - position1).getNormalized();
-	collisionData->penetration = getRadius() + other->getRadius() - distance;
+	collisionData->contactPoint = position1 + direction * getRadius();
+	collisionData->normal = direction;
+	collisionData->penetrationDistance = getRadius() + other->getRadius() - distance;
+
+	return collisionData;
 }
 
 GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionAABB(AABBColliderComponent* other)
 {
-	GameMath::Vector3 position1 = getOwner()->getTransform()->getGlobalPosition();
-	GameMath::Vector3 position2 = other->getOwner()->getTransform()->getGlobalPosition();
-
-	GameMath::Vector3 closestPoint = (position2 - position1).getNormalized();
-	
-	GameMath::Vector3 otherSize = other->getOwner()->getTransform()->getGlobalScale();
-
-	closestPoint.x = clamp(closestPoint.x, position1.x - otherSize.x / 2, position1.x + otherSize.x / 2);
-	closestPoint.y = clamp(closestPoint.y, position1.y - otherSize.y / 2, position1.y + otherSize.y / 2);
-	closestPoint.z = clamp(closestPoint.z, position1.z - otherSize.z / 2, position1.z + otherSize.z / 2);
-
-	float distance = (position2 - closestPoint).getMagnitude();
-
-	if (distance > getRadius())
-		return nullptr;
-
-	Collision* collisionData = new Collision();
+	Collision* collisionData = other->checkCollisionCircle(this);
 	collisionData->collider = other;
-	collisionData->normal = (closestPoint - position2).getNormalized();
-	collisionData->penetration = getRadius() - distance;
-
+	collisionData->normal = collisionData->normal * -1;
 	return collisionData;
 }
 

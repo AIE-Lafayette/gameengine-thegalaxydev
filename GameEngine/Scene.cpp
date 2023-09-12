@@ -52,11 +52,11 @@ void GameEngine::Scene::fixedUpdate()
 	{
 		for (auto iterator2 = iterator1; iterator2 != m_activeColliders.end(); iterator2++)
 		{
-			if (iterator1 == iterator2)
-				continue;
-
 			GamePhysics::ColliderComponent* collider1 = *iterator1;
 			GamePhysics::ColliderComponent* collider2 = *iterator2;
+				
+			if (collider1 == collider2)
+				continue;
 
 			if (!collider2->getOwner()->getEnabled())
 				continue;
