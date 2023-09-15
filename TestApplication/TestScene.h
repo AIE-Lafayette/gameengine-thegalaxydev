@@ -6,5 +6,6 @@ class TestScene :
 {
     void onStart() override;
     void onUpdate(double deltaTime) override;
+    void onFixedUpdate() override;
 };
 

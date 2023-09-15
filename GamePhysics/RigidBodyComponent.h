@@ -41,7 +41,14 @@ namespace GamePhysics
         void applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector3 force);
         void applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector2 force);
 
+        float getStaticFrictionCoefficient() { return m_staticFrictionCoefficient; }
+        void setStaticFrictionCoefficient(float value) { m_staticFrictionCoefficient = value; }
+
+        float getDynamicFrictionCoefficient() { return m_dyanmicFrictionCoefficient; }
+        void setDynamicFrictionCoefficient(float value) { m_dyanmicFrictionCoefficient = value; } 
+
         void applyContactForce(GamePhysics::Collision* other);
+        void applyFrictionForce(GamePhysics::Collision* other);
 
         void update(double deltaTime) override;
         void fixedUpdate() override;
@@ -54,6 +61,8 @@ namespace GamePhysics
     private:
         float m_mass = 1;
         float m_gravity = 9.81f;
+        float m_staticFrictionCoefficient = 0.0f;
+        float m_dyanmicFrictionCoefficient = 0.0f;
         float m_elasticity = 0;
         GameMath::Vector3 m_velocity = GameMath::Vector3();
 

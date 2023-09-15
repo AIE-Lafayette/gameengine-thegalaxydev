@@ -63,15 +63,37 @@ void GamePhysics::RigidBodyComponent::applyContactForce(GamePhysics::Collision* 
 	if (!getIsKinematic())
 	{
 		GameMath::Vector3 position = getOwner()->getTransform()->getLocalPosition();
-		//getOwner()->getTransform()->setLocalPosition(position + other->normal * -penetrationDistance);
-		applyForceToGameObject(other->collider->getRigidBody(), other->normal * displacement1 * penetrationDistance);
+		getOwner()->getTransform()->setLocalPosition(position + other->normal * -penetrationDistance);
+		//applyForceToGameObject(other->collider->getRigidBody(), other->normal * displacement1 * penetrationDistance);
 	}
+}
+
+void GamePhysics::RigidBodyComponent::applyFrictionForce(GamePhysics::Collision* other)
+{
+	float averageStaticCoefficient = (getStaticFrictionCoefficient() + other->collider->getRigidBody()->getStaticFrictionCoefficient()) / 2;
+
+
+	GameMath::Vector3 staticFrictionForce = other->normal * averageStaticCoefficient;
+	GameMath::Vector3 velocity = getVelocity3D();
+
+	if (velocity.getMagnitude() < staticFrictionForce.getMagnitude())
+	{
+		applyForce(velocity * -1);
+	}
+
+	float averageDynamicCoefficient = (getDynamicFrictionCoefficient() + other->collider->getRigidBody()->getDynamicFrictionCoefficient()) / 2;
+
+	GameMath::Vector3 dynamicFrictionForce = other->normal * averageDynamicCoefficient;
+	GameMath::Vector3 frictionDirection = velocity.getNormalized() * -1;
+
+	applyForce(frictionDirection * dynamicFrictionForce.getMagnitude());
 }
 
 
 void GamePhysics::RigidBodyComponent::resolveCollision(GamePhysics::Collision* collisionData)
 {
 	applyContactForce(collisionData);
+	applyFrictionForce(collisionData);
 	GamePhysics::RigidBodyComponent* current = this;
 	GamePhysics::RigidBodyComponent* other = collisionData->collider->getRigidBody();
 	float averageElasticity = (getElasticity() + collisionData->collider->getRigidBody()->getElasticity()) / 2;
@@ -93,6 +115,8 @@ void GamePhysics::RigidBodyComponent::resolveCollision(GamePhysics::Collision* c
 	float dotProduct = GameMath::Vector3::dotProduct(velocity - otherVelocity, normal);
 	float normalDotProduct = GameMath::Vector3::dotProduct(normal, normal * (1 / mass + 1 / otherMass));
 	// j = (-(1 + e) * dot(vA - vB, n)) / (dot(n,n * (1/mA + 1/mB)))
+	if (normalDotProduct == 0)
+		return;
 
 	float impulse = (-(1 + averageElasticity) * dotProduct) / normalDotProduct;
 

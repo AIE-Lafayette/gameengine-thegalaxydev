@@ -49,6 +49,21 @@ GameMath::Vector3 GameEngine::TransformComponent::getLocalRotation()
 	return m_rotation;
 }
 
+GameMath::Vector3 GameEngine::TransformComponent::getGlobalRotation()
+{
+	updateMatrices();
+
+	GameMath::Vector3 xAxis = GameMath::Vector3(m_globalMatrix.m00, m_globalMatrix.m10, m_globalMatrix.m20);
+	GameMath::Vector3 yAxis = GameMath::Vector3(m_globalMatrix.m01, m_globalMatrix.m11, m_globalMatrix.m21);
+	GameMath::Vector3 zAxis = GameMath::Vector3(m_globalMatrix.m02, m_globalMatrix.m12, m_globalMatrix.m22);
+
+	float angleX = atan2f(xAxis.y, xAxis.x);
+	float angleY = atan2f(yAxis.x, yAxis.y);
+	float angleZ = atan2f(zAxis.y, zAxis.x);	
+
+	return GameMath::Vector3(angleX, angleY, angleZ);
+}
+
 void GameEngine::TransformComponent::setLocalScale(GameMath::Vector3 scale)
 {
 	m_scale = scale;

@@ -1,5 +1,6 @@
 #include "AABBColliderComponent.h"
 #include "CircleColliderComponent.h"
+#include "OBBColliderComponent.h"
 #include "GameEngine/TransformComponent.h"
 #include <Raylib/raylib.h>
 
@@ -39,24 +40,25 @@ GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionCircle
 	GameMath::Vector3 position1 = getOwner()->getTransform()->getGlobalPosition();
 	GameMath::Vector3 position2 = other->getOwner()->getTransform()->getGlobalPosition();
 
-	GameMath::Vector3 direction = (position2 - position1).getNormalized();
+	GameMath::Vector3 direction = (position2 - position1);
 
 	direction.x = clamp(direction.x, -m_size.x / 2, m_size.x / 2);
 	direction.y = clamp(direction.y, -m_size.y / 2, m_size.y / 2);
 	direction.z = clamp(direction.z, -m_size.z / 2, m_size.z / 2);
 
-
 	GameMath::Vector3 closestPoint = position1 + direction;
 	float distance = (position2 - closestPoint).getMagnitude();
 
-	if (distance > other->getRadius())
+	direction.normalize();
+	float radius = other->getRadius();
+	if (distance > radius)
 		return nullptr;
 
 	Collision* collisionData = new Collision();
 	collisionData->collider = other;
 	collisionData->normal = (position2 - closestPoint).getNormalized();
 	collisionData->contactPoint = closestPoint;
-	collisionData->penetrationDistance = other->getRadius() - distance;
+	collisionData->penetrationDistance = radius - distance;
 
 	return collisionData;
 }
@@ -96,6 +98,19 @@ GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionAABB(A
 	return collisionData;
 }
 
+GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionOBB(OBBColliderComponent* other)
+{
+	Collision* collisionData = other->checkCollisionAABB(this);
+
+	if (!collisionData)
+		return nullptr;
+
+	collisionData->collider = other;
+	collisionData->normal = collisionData->normal * -1;
+	return collisionData;
+}
+
+
 float GamePhysics::AABBColliderComponent::getRight()
 {
 	return getOwner()->getTransform()->getGlobalPosition().x + m_size.x / 2;
@@ -129,6 +144,9 @@ float GamePhysics::AABBColliderComponent::getUp()
 
 void GamePhysics::AABBColliderComponent::draw()
 {
+	if (!getIsDebug())
+		return;
+
 	GameMath::Vector3 position = getOwner()->getTransform()->getGlobalPosition();
 	RAYLIB_H Vector3 newPos = { position.x , position.y, position.z};
 

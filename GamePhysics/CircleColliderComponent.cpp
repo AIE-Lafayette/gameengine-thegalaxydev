@@ -1,6 +1,8 @@
 #include "CircleColliderComponent.h"
 #include "AABBColliderComponent.h"
+#include "OBBColliderComponent.h"
 #include "GameEngine/TransformComponent.h"
+
 
 #include <Raylib/raylib.h>
 
@@ -54,6 +56,22 @@ GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionCirc
 GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionAABB(AABBColliderComponent* other)
 {
 	Collision* collisionData = other->checkCollisionCircle(this);
+	
+	if (!collisionData)
+		return nullptr;
+
+	collisionData->collider = other;
+	collisionData->normal = collisionData->normal * -1;
+	return collisionData;
+}
+
+GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionOBB(OBBColliderComponent* other)
+{
+	Collision* collisionData = other->checkCollisionCircle(this);
+
+	if (!collisionData)
+		return nullptr;
+
 	collisionData->collider = other;
 	collisionData->normal = collisionData->normal * -1;
 	return collisionData;
@@ -62,6 +80,9 @@ GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionAABB
 
 void GamePhysics::CircleColliderComponent::draw()
 {
+	if (!getIsDebug())
+		return;
+
 	GameMath::Vector3 position = getOwner()->getTransform()->getGlobalPosition();
 
 	RAYLIB_H::Vector3 newPos = { position.x, position.y, position.z };
