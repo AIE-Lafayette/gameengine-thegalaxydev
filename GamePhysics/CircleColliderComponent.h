@@ -11,7 +11,6 @@ namespace GamePhysics {
 
 		Collision* checkCollisionCircle(CircleColliderComponent* other) override;
 		Collision* checkCollisionAABB(AABBColliderComponent* other) override;
-		Collision* checkCollisionOBB(OBBColliderComponent* other) override;
 
 
 		float getRadius() { return m_radius; }

@@ -8,7 +8,6 @@ namespace GamePhysics
 
 	class CircleColliderComponent;
 	class AABBColliderComponent;
-	class OBBColliderComponent;
 
 	class ColliderComponent :
 		public GameEngine::Component
@@ -18,7 +17,6 @@ namespace GamePhysics
 		{
 			CIRCLE,
 			AABB,
-			OBB
 		};
 
 		ColliderComponent() {}
@@ -29,7 +27,6 @@ namespace GamePhysics
 
 		virtual Collision* checkCollisionCircle(CircleColliderComponent* other) = 0;
 		virtual Collision* checkCollisionAABB(AABBColliderComponent* other) = 0;
-		virtual Collision* checkCollisionOBB(OBBColliderComponent* other) = 0;
 
 		bool getIsTrigger() { return m_isTrigger; }
 		void setIsTrigger(bool value) { m_isTrigger = value; }

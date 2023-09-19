@@ -3,13 +3,13 @@
 #include "GamePhysics/RigidBodyComponent.h"
 #include "GamePhysics/CircleColliderComponent.h"
 #include "GamePhysics/AABBColliderComponent.h"
-#include "GamePhysics/OBBColliderComponent.h"
 #include "Bumper.h"
 #include "InputComponent2D.h"
 #include "GameEngine/Engine.h"
 #include "Raylib/raylib.h"
 
 #include <iostream>
+#include <random>
 
 
 bool enablePhysics = false;
@@ -65,8 +65,8 @@ void TestScene::onStart()
 	immovableObject->addComponent<GamePhysics::AABBColliderComponent>()->setSize(immovableObject->getTransform()->getLocalScale());
 
 	GamePhysics::RigidBodyComponent* rigidBody = immovableObject->addComponent<GamePhysics::RigidBodyComponent>();
-	rigidBody->setStaticFrictionCoefficient(1.0f);
-	rigidBody->setDynamicFrictionCoefficient(0.5f);
+	rigidBody->setStaticFrictionCoefficient(40.0f);
+	rigidBody->setDynamicFrictionCoefficient(100.0f);
 
 	addGameObject(immovableObject);
 
@@ -83,17 +83,24 @@ void TestScene::onUpdate(double deltaTime)
 
 		ball->getTransform()->setLocalScale({ 20.0f, 20.0f, 0.0f });
 		ball->getTransform()->setLocalPosition(mousePosition);
-		ball->addComponent<GameGraphics::ShapeComponent>()->setShapeType(GameGraphics::CUBE);
+		GameGraphics::ShapeComponent* shape = ball->addComponent<GameGraphics::ShapeComponent>();
+		shape->setShapeType(GameGraphics::CUBE);
 		ball->addComponent<GamePhysics::AABBColliderComponent>()->setSize(ball->getTransform()->getLocalScale());
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<uint32_t> dis(0, UINT32_MAX);
+		shape->setColor(dis(gen));
 
 		GamePhysics::RigidBodyComponent* rigidBody = ball->addComponent<GamePhysics::RigidBodyComponent>();
 		rigidBody->setStaticFrictionCoefficient(0.3f);
 		rigidBody->setDynamicFrictionCoefficient(0.15f);
 
-		rigidBody->setElasticity(2.0f);
+		rigidBody->setElasticity(0.0f);
 		rigidBody->setMass(1.0f);
 		GameMath::Vector3 direction = (immovableObject->getTransform()->getGlobalPosition() - mousePosition).getNormalized();
 		rigidBody->applyForce(direction * 200);
+
+		
 
 		addGameObject(ball);
 	}

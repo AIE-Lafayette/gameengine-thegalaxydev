@@ -13,7 +13,6 @@ namespace GamePhysics
 
 		Collision* checkCollisionCircle(CircleColliderComponent* other) override;
 		Collision* checkCollisionAABB(AABBColliderComponent* other) override;
-		Collision* checkCollisionOBB(OBBColliderComponent* other) override;
 
 		GameMath::Vector3 getPenetrationVector(AABBColliderComponent* other);
 

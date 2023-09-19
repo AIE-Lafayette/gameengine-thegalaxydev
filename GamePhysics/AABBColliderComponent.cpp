@@ -1,6 +1,5 @@
 #include "AABBColliderComponent.h"
 #include "CircleColliderComponent.h"
-#include "OBBColliderComponent.h"
 #include "GameEngine/TransformComponent.h"
 #include <Raylib/raylib.h>
 
@@ -48,6 +47,7 @@ GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionCircle
 
 	GameMath::Vector3 closestPoint = position1 + direction;
 	float distance = (position2 - closestPoint).getMagnitude();
+
 
 	direction.normalize();
 	float radius = other->getRadius();
@@ -97,19 +97,6 @@ GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionAABB(A
 
 	return collisionData;
 }
-
-GamePhysics::Collision* GamePhysics::AABBColliderComponent::checkCollisionOBB(OBBColliderComponent* other)
-{
-	Collision* collisionData = other->checkCollisionAABB(this);
-
-	if (!collisionData)
-		return nullptr;
-
-	collisionData->collider = other;
-	collisionData->normal = collisionData->normal * -1;
-	return collisionData;
-}
-
 
 float GamePhysics::AABBColliderComponent::getRight()
 {

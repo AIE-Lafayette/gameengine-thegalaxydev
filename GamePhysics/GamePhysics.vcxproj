@@ -146,14 +146,12 @@
     <ClInclude Include="AABBColliderComponent.h" />
     <ClInclude Include="CircleColliderComponent.h" />
     <ClInclude Include="ColliderComponent.h" />
-    <ClInclude Include="OBBColliderComponent.h" />
     <ClInclude Include="RigidBodyComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABBColliderComponent.cpp" />
     <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
-    <ClCompile Include="OBBColliderComponent.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

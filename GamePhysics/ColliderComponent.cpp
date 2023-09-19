@@ -26,8 +26,6 @@ GamePhysics::Collision* GamePhysics::ColliderComponent::checkCollision(GamePhysi
 		return checkCollisionCircle((CircleColliderComponent*)other);
 	case AABB:
 		return checkCollisionAABB((AABBColliderComponent*)other);
-	case OBB:
-		return checkCollisionOBB((OBBColliderComponent*)other);
 
 	break;
 	}

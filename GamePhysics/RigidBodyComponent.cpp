@@ -67,33 +67,37 @@ void GamePhysics::RigidBodyComponent::applyContactForce(GamePhysics::Collision* 
 		//applyForceToGameObject(other->collider->getRigidBody(), other->normal * displacement1 * penetrationDistance);
 	}
 }
-
 void GamePhysics::RigidBodyComponent::applyFrictionForce(GamePhysics::Collision* other)
 {
-	float averageStaticCoefficient = (getStaticFrictionCoefficient() + other->collider->getRigidBody()->getStaticFrictionCoefficient()) / 2;
+    float normalForceMagnitude = other->normal.getMagnitude(); 
 
+    float averageStaticCoefficient = (getStaticFrictionCoefficient() + other->collider->getRigidBody()->getStaticFrictionCoefficient()) / 2;
+    float averageDynamicCoefficient = (getDynamicFrictionCoefficient() + other->collider->getRigidBody()->getDynamicFrictionCoefficient()) / 2;
 
-	GameMath::Vector3 staticFrictionForce = other->normal * averageStaticCoefficient;
-	GameMath::Vector3 velocity = getVelocity3D();
+    GameMath::Vector3 staticFrictionForce = other->normal * (averageStaticCoefficient * normalForceMagnitude);
+    GameMath::Vector3 velocity = getVelocity3D();
 
-	if (velocity.getMagnitude() < staticFrictionForce.getMagnitude())
-	{
-		applyForce(velocity * -1);
-	}
+    if (velocity.getMagnitude() < staticFrictionForce.getMagnitude())
+    {
+        applyForce(velocity * -1);
+    }
+    else
+    {
+        GameMath::Vector3 dynamicFrictionForce = other->normal * (averageDynamicCoefficient * normalForceMagnitude);
+        GameMath::Vector3 frictionDirection = velocity.getNormalized() * -1;
 
-	float averageDynamicCoefficient = (getDynamicFrictionCoefficient() + other->collider->getRigidBody()->getDynamicFrictionCoefficient()) / 2;
-
-	GameMath::Vector3 dynamicFrictionForce = other->normal * averageDynamicCoefficient;
-	GameMath::Vector3 frictionDirection = velocity.getNormalized() * -1;
-
-	applyForce(frictionDirection * dynamicFrictionForce.getMagnitude());
+        if (velocity.getMagnitude() > 0)
+        {
+            applyForce(frictionDirection * dynamicFrictionForce.getMagnitude());
+        }
+    }
 }
 
 
 void GamePhysics::RigidBodyComponent::resolveCollision(GamePhysics::Collision* collisionData)
 {
-	applyContactForce(collisionData);
 	applyFrictionForce(collisionData);
+	applyContactForce(collisionData);
 	GamePhysics::RigidBodyComponent* current = this;
 	GamePhysics::RigidBodyComponent* other = collisionData->collider->getRigidBody();
 	float averageElasticity = (getElasticity() + collisionData->collider->getRigidBody()->getElasticity()) / 2;

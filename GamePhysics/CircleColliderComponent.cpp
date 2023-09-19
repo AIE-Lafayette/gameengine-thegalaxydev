@@ -1,6 +1,5 @@
 #include "CircleColliderComponent.h"
 #include "AABBColliderComponent.h"
-#include "OBBColliderComponent.h"
 #include "GameEngine/TransformComponent.h"
 
 
@@ -57,18 +56,6 @@ GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionAABB
 {
 	Collision* collisionData = other->checkCollisionCircle(this);
 	
-	if (!collisionData)
-		return nullptr;
-
-	collisionData->collider = other;
-	collisionData->normal = collisionData->normal * -1;
-	return collisionData;
-}
-
-GamePhysics::Collision* GamePhysics::CircleColliderComponent::checkCollisionOBB(OBBColliderComponent* other)
-{
-	Collision* collisionData = other->checkCollisionCircle(this);
-
 	if (!collisionData)
 		return nullptr;
 

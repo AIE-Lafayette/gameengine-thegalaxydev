@@ -27,9 +27,6 @@
     <ClInclude Include="AABBColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OBBColliderComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RigidBodyComponent.cpp">
@@ -42,9 +39,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AABBColliderComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OBBColliderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
