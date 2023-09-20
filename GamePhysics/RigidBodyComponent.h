@@ -41,13 +41,34 @@ namespace GamePhysics
         void applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector3 force);
         void applyForceToGameObject(RigidBodyComponent* other, GameMath::Vector2 force);
 
+        /// <summary>
+        /// Returns the coefficient of friction when the object is not moving
+        /// </summary>
         float getStaticFrictionCoefficient() { return m_staticFrictionCoefficient; }
+
+        /// <summary>
+        /// Set the coefficient of friction when the object is not moving
+        /// </summary>
+        /// <param name="value">The value to set</param>
         void setStaticFrictionCoefficient(float value) { m_staticFrictionCoefficient = value; }
 
+        /// <summary>
+        /// Returns the coefficient of friction when the object is moving
+        /// </summary>
         float getDynamicFrictionCoefficient() { return m_dyanmicFrictionCoefficient; }
+
+        /// <summary>
+        /// Set the coefficient of friction when the object is moving
+        /// </summary>
+        /// <param name="value">The value to set</param>
         void setDynamicFrictionCoefficient(float value) { m_dyanmicFrictionCoefficient = value; } 
 
         void applyContactForce(GamePhysics::Collision* other);
+
+        /// <summary>
+        /// Used to calculate and apply friction based on the coefficients stored.
+        /// </summary>
+        /// <param name="other">The collider to apply friction with.</param>
         void applyFrictionForce(GamePhysics::Collision* other);
 
         void update(double deltaTime) override;

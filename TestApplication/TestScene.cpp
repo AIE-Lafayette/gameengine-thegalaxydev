@@ -3,7 +3,6 @@
 #include "GamePhysics/RigidBodyComponent.h"
 #include "GamePhysics/CircleColliderComponent.h"
 #include "GamePhysics/AABBColliderComponent.h"
-#include "Bumper.h"
 #include "InputComponent2D.h"
 #include "GameEngine/Engine.h"
 #include "Raylib/raylib.h"

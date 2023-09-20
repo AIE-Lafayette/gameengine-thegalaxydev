@@ -7,6 +7,10 @@ class InputComponent2D :
 {
 
 public:
+
+    /// <summary>
+    /// Returns a direct ion based on WASD input.
+    /// </summary>
     GameMath::Vector3 getMoveDirection();
 };
 

@@ -133,7 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bumper.cpp" />
     <ClCompile Include="InputComponent2D.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SpringBehaviorComponent.cpp" />
@@ -151,7 +150,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bumper.h" />
     <ClInclude Include="InputComponent2D.h" />
     <ClInclude Include="SpringBehaviorComponent.h" />
     <ClInclude Include="TestScene.h" />

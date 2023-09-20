@@ -39,28 +39,22 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Bumper.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="InputComponent2D.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="SpringBehaviorComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestScene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Bumper.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="InputComponent2D.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="SpringBehaviorComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
