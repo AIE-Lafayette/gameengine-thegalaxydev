@@ -63,14 +63,6 @@ namespace GamePhysics
         /// <param name="value">The value to set</param>
         void setDynamicFrictionCoefficient(float value) { m_dyanmicFrictionCoefficient = value; } 
 
-        void applyContactForce(GamePhysics::Collision* other);
-
-        /// <summary>
-        /// Used to calculate and apply friction based on the coefficients stored.
-        /// </summary>
-        /// <param name="other">The collider to apply friction with.</param>
-        void applyFrictionForce(GamePhysics::Collision* other);
-
         void update(double deltaTime) override;
         void fixedUpdate() override;
 
@@ -78,6 +70,15 @@ namespace GamePhysics
         void setIsKinematic(bool value) { m_isKinematic = value; }
 
         void resolveCollision(GamePhysics::Collision* collisionData);
+
+    private:
+        void applyContactForce(GamePhysics::Collision* other);
+
+        /// <summary>
+        /// Used to calculate and apply friction based on the coefficients stored.
+        /// </summary>
+        /// <param name="other">The collider to apply friction with.</param>
+        void applyFrictionForce(GamePhysics::Collision* other);
 
     private:
         float m_mass = 1;

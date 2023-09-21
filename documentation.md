@@ -83,9 +83,10 @@ Sets the static friction coefficient value to the float given. (`m_staticFrictio
 <td>
 
 ```cpp
+private:
 void applyFrictionForce(GamePhysics::Collision* other)
 ```
-Calculates and applies friction forced based on a collision between two objects utilizing the averages of their dynamic and static friction coefficients. **This function is called internally and may have unintended results when used outside of collision resolution.**
+Calculates and applies friction forced based on a collision between two objects utilizing the averages of their dynamic and static friction coefficients. **This function is private and called internally and may have unintended results when used outside of collision resolution.**
 </td>
 </tr>
 </table>
