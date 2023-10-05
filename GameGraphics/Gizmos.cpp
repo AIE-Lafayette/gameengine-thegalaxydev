@@ -20,4 +20,14 @@ void GameGraphics::Gizmos::init()
 		std::cout << "Failed to open vertex shader file." << std::endl;
 		return;
 	}
+
+	fseek(vertexShaderFile, 0, SEEK_END);
+	unsigned int vertexShaderSize = ftell(vertexShaderFile);
+	rewind(vertexShaderFile);
+
+	m_vertexShader = new char[vertexShaderSize + 1];
+
+	m_vertexShader[vertexShaderSize] = '\0';
+
+	fread_s(m_vertexShader, sizeof(char) * vertexShaderSize + 1, 1, vertexShaderSize, vertexShaderFile);
 }
