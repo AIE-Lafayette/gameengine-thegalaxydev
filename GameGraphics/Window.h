@@ -1,5 +1,6 @@
 #pragma once
 
+struct GLFWwindow;
 
 namespace GameGraphics
 {
@@ -29,6 +30,7 @@ namespace GameGraphics
 		int m_width;
 		int m_height;
 		const char* m_title;
+		GLFWwindow* m_window;
 	};
 }
 

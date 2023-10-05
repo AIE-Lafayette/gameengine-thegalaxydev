@@ -1,7 +1,6 @@
 #include "AABBColliderComponent.h"
 #include "CircleColliderComponent.h"
 #include "GameEngine/TransformComponent.h"
-#include <Raylib/raylib.h>
 
 inline int clamp(int value, int min, int max)
 {
@@ -134,10 +133,10 @@ void GamePhysics::AABBColliderComponent::draw()
 	if (!getIsDebug())
 		return;
 
-	GameMath::Vector3 position = getOwner()->getTransform()->getGlobalPosition();
+	/*GameMath::Vector3 position = getOwner()->getTransform()->getGlobalPosition();
 	RAYLIB_H Vector3 newPos = { position.x , position.y, position.z};
 
-	RAYLIB_H::DrawCubeWires(newPos, m_size.x, m_size.y, m_size.z, RAYLIB_H::GetColor(getColor()));
+	RAYLIB_H::DrawCubeWires(newPos, m_size.x, m_size.y, m_size.z, RAYLIB_H::GetColor(getColor()));*/
 }
 
 GameMath::Vector3 GamePhysics::AABBColliderComponent::getPenetrationVector(AABBColliderComponent* other)

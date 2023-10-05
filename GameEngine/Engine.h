@@ -1,6 +1,11 @@
 #pragma once
 #include "Scene.h"
 
+namespace GameGraphics 
+{
+	class Window;
+}
+
 namespace GameEngine {
 	class Engine
 	{
@@ -21,6 +26,8 @@ namespace GameEngine {
 		void addScene(Scene* scene);
 		void removeScene(Scene* scene);
 
+		static GameGraphics::Window* getWindow() { return m_window; }
+
 	private:
 		// functions
 		void start();
@@ -33,6 +40,8 @@ namespace GameEngine {
 		static double m_deltaTime;
 		static double m_fixedTimeStep;
 		static Scene* m_currentScene;
+
+		static GameGraphics::Window* m_window;
 	};
 }
 

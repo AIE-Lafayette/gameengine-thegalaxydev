@@ -5,8 +5,6 @@
 #include "GamePhysics/AABBColliderComponent.h"
 #include "InputComponent2D.h"
 #include "GameEngine/Engine.h"
-#include "Raylib/raylib.h"
-
 #include <iostream>
 #include <random>
 
@@ -74,7 +72,7 @@ void TestScene::onStart()
 double elapsed = 0;
 void TestScene::onUpdate(double deltaTime)
 {
-	if (IsKeyPressed(KEY_E))
+	/*if (IsKeyPressed(KEY_E))
 	{
 		GameEngine::GameObject* ball = new GameEngine::GameObject();
 
@@ -102,7 +100,7 @@ void TestScene::onUpdate(double deltaTime)
 		
 
 		addGameObject(ball);
-	}
+	}*/
 }
 	
 void TestScene::onFixedUpdate()

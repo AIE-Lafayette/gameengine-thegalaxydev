@@ -3,9 +3,6 @@
 #include "GameEngine/TransformComponent.h"
 
 
-#include <Raylib/raylib.h>
-
-
 inline int clamp(int value, int min, int max)
 {
 	if (value < min)
@@ -72,6 +69,6 @@ void GamePhysics::CircleColliderComponent::draw()
 
 	GameMath::Vector3 position = getOwner()->getTransform()->getGlobalPosition();
 
-	RAYLIB_H::Vector3 newPos = { position.x, position.y, position.z };
-	RAYLIB_H::DrawSphereWires(newPos, getRadius(), 32, 32, RAYLIB_H::GetColor(getColor()));
+	//RAYLIB_H::Vector3 newPos = { position.x, position.y, position.z };
+	//RAYLIB_H::DrawSphereWires(newPos, getRadius(), 32, 32, RAYLIB_H::GetColor(getColor()));
 }

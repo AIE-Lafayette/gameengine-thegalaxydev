@@ -154,6 +154,10 @@
     <ClInclude Include="SpringBehaviorComponent.h" />
     <ClInclude Include="TestScene.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="GizmoShader.frag" />
+    <None Include="GizmoShader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
