@@ -48,6 +48,9 @@
     <ClCompile Include="SpringBehaviorComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="WaterSpriteComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TestScene.h">
@@ -59,12 +62,27 @@
     <ClInclude Include="SpringBehaviorComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="WaterSpriteComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="GizmoShader.frag">
       <Filter>Shaders</Filter>
     </None>
     <None Include="GizmoShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="SpriteShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="SpriteShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="WaterShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="WaterShader.frag">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

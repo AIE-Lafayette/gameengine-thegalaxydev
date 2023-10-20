@@ -7,102 +7,145 @@
 #include "GameEngine/Engine.h"
 #include <iostream>
 #include <random>
+#include "GameGraphics/SpriteComponent.h"
+#include "GameGraphics/Gizmos.h"
+#include "WaterSpriteComponent.h"
 
+#include "GameEngine/Input.h"
 
 bool enablePhysics = false;
 
-GameEngine::GameObject* immovableObject;
+GameEngine::GameObject* boat;
+GameEngine::GameObject* player;
+GameEngine::GameObject* fish;
 
-void centerOnScreen(GameEngine::TransformComponent* transform, GameMath::Vector3 offset)
-{
-	// set position based on scale
-	GameMath::Vector3 position = transform->getLocalPosition();
-	GameMath::Vector3 scale = transform->getLocalScale();
-
-	position.x = (400) - (scale.x / 2);
-	position.y = (400) - (scale.y / 2);
-
-	transform->setLocalPosition(position + offset);
-}
-GameEngine::GameObject* makePlatform(GameMath::Vector3 position, GameMath::Vector3 size)
-{
-	GameEngine::GameObject* platform = new GameEngine::GameObject();
-
-	platform->getTransform()->setLocalScale(size);
-	platform->getTransform()->setLocalPosition(position);
-	GamePhysics::RigidBodyComponent* rigidBody2 = platform->addComponent<GamePhysics::RigidBodyComponent>();
-	rigidBody2->setIsKinematic(true);
-	GamePhysics::AABBColliderComponent* collider = platform->addComponent<GamePhysics::AABBColliderComponent>();
-	collider->setSize(platform->getTransform()->getLocalScale());
-	collider->setIsDebug(true);
-	GameGraphics::ShapeComponent* shape = platform->addComponent<GameGraphics::ShapeComponent>();
-	shape->setShapeType(GameGraphics::CUBE);
-	shape->setColor(0x000000FF);
-
-	rigidBody2->setStaticFrictionCoefficient(60);
-	rigidBody2->setDynamicFrictionCoefficient(100);
-
-	return platform;
-}
+bool isCasted = false;
+GameMath::Vector2 castPosition;
+float elapsed = 0;
+bool mousePressed = false;
+bool prevFrameMouseState = false;
 
 void TestScene::onStart()
 {
-	//platform under player
+	GameEngine::GameObject* clouds = new GameEngine::GameObject();
+	WaterSpriteComponent* cloudSprite = new WaterSpriteComponent("clouds.png", GameGraphics::REPEAT);
+	cloudSprite->setOffsetVector({ -0.05f, 0 });
+	clouds->addComponent(cloudSprite);
+	clouds->getTransform()->setLocalScale({ 800.0f, 800.0f });
+	clouds->getTransform()->setLocalPosition({ 0, 0 });
 
-	//floor
-	addGameObject(makePlatform({400,790, 0 }, { 800, 20, 0 }));
-	addGameObject(makePlatform({ 400,10, 0 }, { 800, 20, 0 }));
-	addGameObject(makePlatform({ 10,400, 0 }, { 20, 800, 0 }));
-	addGameObject(makePlatform({ 790,400, 0 }, { 20, 800, 0 }));
+	boat = new GameEngine::GameObject();
+	GameGraphics::SpriteComponent* boatSprite = new GameGraphics::SpriteComponent("boat.png", GameGraphics::FIT);
+	boat->addComponent(boatSprite);
+	boat->getTransform()->setLocalScale({ 300.0f, 300.0f });
+	boat->getTransform()->setLocalPosition({ 0, 0 });
 
-	immovableObject = new GameEngine::GameObject();
-	immovableObject->getTransform()->setLocalScale({ 50.0f, 50.0f, 0.0f });
-	immovableObject->getTransform()->setLocalPosition({ 380, 300, 0 });
-	immovableObject->addComponent<GameGraphics::ShapeComponent>()->setShapeType(GameGraphics::CUBE);
-	immovableObject->addComponent<GamePhysics::AABBColliderComponent>()->setSize(immovableObject->getTransform()->getLocalScale());
+	GameEngine::GameObject* boatShadow = new GameEngine::GameObject();
+	GameGraphics::SpriteComponent* boatShadowSprite = new GameGraphics::SpriteComponent("boatshadow.png", GameGraphics::FIT);
+	boatShadow->addComponent(boatShadowSprite);
+	boatShadow->getTransform()->setParent(boat->getTransform());
+	boatShadow->getTransform()->setLocalScale(1,1);
+	boatShadow->getTransform()->setLocalPosition({ 0, 0 });
 
-	GamePhysics::RigidBodyComponent* rigidBody = immovableObject->addComponent<GamePhysics::RigidBodyComponent>();
-	rigidBody->setStaticFrictionCoefficient(40.0f);
-	rigidBody->setDynamicFrictionCoefficient(100.0f);
+	GameEngine::GameObject* water = new GameEngine::GameObject();
+	WaterSpriteComponent* waterSprite = new WaterSpriteComponent("tile_water.png", GameGraphics::TILE);
+	waterSprite->setTileSize({ 200, 200 });
+	waterSprite->setOffsetVector({ -0.5f, 0.0f });
+	water->addComponent(waterSprite);
+	water->getTransform()->setLocalScale({ 800.0f, 600.0f });
+	water->getTransform()->setLocalPosition({0, -300});
 
-	addGameObject(immovableObject);
+	player = new GameEngine::GameObject();
+	GameGraphics::SpriteComponent* playerSprite = new GameGraphics::SpriteComponent("fisherman.png", GameGraphics::FIT);
+	player->addComponent(playerSprite);
+	player->getTransform()->setParent(boat->getTransform());
+	player->getTransform()->setLocalScale(0.5, 0.5);
+	player->getTransform()->setLocalPosition({ 0.05, 0.1 });
 
+	fish = new GameEngine::GameObject();
+	GameGraphics::SpriteComponent* fishSprite = new GameGraphics::SpriteComponent("fish.png", GameGraphics::FIT);
+	fish->addComponent(fishSprite);
+	fish->getTransform()->setLocalScale({ 500.0f, 500.0f });
+	fish->getTransform()->setLocalPosition({ 0, 150 });
+	fish->setEnabled(false);
+
+
+	addGameObject(fish);
+	addGameObject(player);
+	addGameObject(boat);
+	addGameObject(boatShadow);
+	addGameObject(water);
+	addGameObject(clouds);
+
+
+
+
+	
 }
 
-double elapsed = 0;
+
 void TestScene::onUpdate(double deltaTime)
 {
-	/*if (IsKeyPressed(KEY_E))
+	// this is really dumb but I don't want to fix it right now
+	bool currentFrameMouseState = GameEngine::Input::isMouseButtonDown(0);
+
+	if (currentFrameMouseState && !prevFrameMouseState)
 	{
-		GameEngine::GameObject* ball = new GameEngine::GameObject();
+		mousePressed = true;
+	}
+	else
+	{
+		mousePressed = false;
+	}
 
-		GameMath::Vector3 mousePosition = { (float)GetMouseX(), (float)GetMouseY(), 0 };
+	prevFrameMouseState = currentFrameMouseState;
 
-		ball->getTransform()->setLocalScale({ 20.0f, 20.0f, 0.0f });
-		ball->getTransform()->setLocalPosition(mousePosition);
-		GameGraphics::ShapeComponent* shape = ball->addComponent<GameGraphics::ShapeComponent>();
-		shape->setShapeType(GameGraphics::CUBE);
-		ball->addComponent<GamePhysics::AABBColliderComponent>()->setSize(ball->getTransform()->getLocalScale());
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<uint32_t> dis(0, UINT32_MAX);
-		shape->setColor(dis(gen));
+	
 
-		GamePhysics::RigidBodyComponent* rigidBody = ball->addComponent<GamePhysics::RigidBodyComponent>();
-		rigidBody->setStaticFrictionCoefficient(0.3f);
-		rigidBody->setDynamicFrictionCoefficient(0.15f);
+	if (mousePressed)
+	{
+		std::cout << "Mouse pressed: " << mousePressed << std::endl;
+		if (!isCasted)
+		{
+			GameMath::Vector2 mousePos = GameEngine::Input::getMousePosition();
 
-		rigidBody->setElasticity(0.0f);
-		rigidBody->setMass(1.0f);
-		GameMath::Vector3 direction = (immovableObject->getTransform()->getGlobalPosition() - mousePosition).getNormalized();
-		rigidBody->applyForce(direction * 200);
+			std::cout << mousePos.x << ", " << mousePos.y << std::endl;
 
-		
+			// mouse gotta be in da wata
+			if (mousePos.y > 0 || mousePos.x < -400 || mousePos.x > 400)
+				return;
 
-		addGameObject(ball);
-	}*/
+			fish->setEnabled(false);
+			isCasted = true;
+
+			castPosition = mousePos;
+		}
+		else
+		{
+			// catch a fish maybe i dunno 
+			fish->setEnabled(true);
+			isCasted = false;
+		}
+
+	}
+}
+
+void TestScene::onDraw()
+{
+
+	GameMath::Vector2 offset = { -40, 65 };
+	GameMath::Vector2 startPos = player->getTransform()->getGlobalPosition2D() + offset;
+
+	if (isCasted)
+	{
+		GameGraphics::Gizmos::drawLine(startPos, castPosition, { 1,1,1,1 });
+	}
+	
+
+	
 }
 	
 void TestScene::onFixedUpdate()
 {
+
 }

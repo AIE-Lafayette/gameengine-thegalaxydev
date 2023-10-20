@@ -21,10 +21,10 @@ namespace GameEngine
 
 		GameMath::Vector3 getLocalPosition();
 		GameMath::Vector3 getGlobalPosition();
+		GameMath::Vector2 getGlobalPosition2D();
 
 		void setLocalRotation(GameMath::Vector3 rotation);
-		void setLocalRotation(GameMath::Vector2 rotation);
-		void setLocalRotation(float x, float y);
+		void setLocalRotation(float rotation);
 
 		GameMath::Vector3 getLocalRotation();
 		GameMath::Vector3 getGlobalRotation();
@@ -35,6 +35,7 @@ namespace GameEngine
 		GameMath::Vector3 getLocalScale();
 
 		GameMath::Vector3 getGlobalScale();
+		GameMath::Vector2 getGlobalScale2D();
 
 		void setParent(TransformComponent* parent);
 		TransformComponent* getParent();

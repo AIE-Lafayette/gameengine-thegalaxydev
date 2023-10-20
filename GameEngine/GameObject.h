@@ -80,6 +80,8 @@ namespace GameEngine
 		template<typename T>
 		T* getComponent();
 
+		GameObject* clone();
+
 		virtual void onStart() {}
 		virtual void onUpdate(double deltaTime) {}
 		virtual void onFixedUpdate() {}

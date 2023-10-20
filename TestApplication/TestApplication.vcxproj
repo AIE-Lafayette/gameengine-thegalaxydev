@@ -137,6 +137,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SpringBehaviorComponent.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="WaterSpriteComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameEngine\GameEngine.vcxproj">
@@ -153,10 +154,15 @@
     <ClInclude Include="InputComponent2D.h" />
     <ClInclude Include="SpringBehaviorComponent.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="WaterSpriteComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GizmoShader.frag" />
     <None Include="GizmoShader.vert" />
+    <None Include="SpriteShader.frag" />
+    <None Include="SpriteShader.vert" />
+    <None Include="WaterShader.frag" />
+    <None Include="WaterShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

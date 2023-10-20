@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include <chrono>
 #include "GameGraphics/Window.h"
+#include "GameGraphics/Color4.h"
 
 GameEngine::Scene* GameEngine::Engine::m_currentScene = nullptr;
 double GameEngine::Engine::m_deltaTime = 0;
@@ -10,16 +11,15 @@ GameGraphics::Window* GameEngine::Engine::m_window = nullptr;
 
 void GameEngine::Engine::run()
 {
+	m_window = new GameGraphics::Window(800, 800, "Game");
+	m_window->open();
+	m_window->setTargetFrameRate(60);
+
 	start();
 
 	double lastTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 	double deltaTime = 0;
 	double accumulatedTime = 0;
-	
-	m_window = new GameGraphics::Window(800, 800, "Game");
-	m_window->open();
-	m_window->setTargetFrameRate(60);
-
 
 	while (!getApplicationShouldClose())
 	{
@@ -37,7 +37,7 @@ void GameEngine::Engine::run()
 			accumulatedTime -= getFixedDeltaTime();
 		}
 
-		m_window->beginDrawing();
+		m_window->beginDrawing(GameGraphics::Color4::getColorRGB(103, 190, 230));
 		draw();
 		m_window->endDrawing();
 	}

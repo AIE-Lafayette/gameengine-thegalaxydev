@@ -140,6 +140,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TransformComponent.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>

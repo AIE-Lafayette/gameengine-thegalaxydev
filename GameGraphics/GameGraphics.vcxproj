@@ -138,14 +138,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Color4.h" />
     <ClInclude Include="Gizmos.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="ShapeComponent.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Color4.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShapeComponent.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>

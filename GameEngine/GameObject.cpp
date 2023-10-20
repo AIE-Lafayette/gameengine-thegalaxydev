@@ -10,6 +10,9 @@ GameEngine::GameObject::GameObject()
 
 void GameEngine::GameObject::start()
 {
+	if (!m_enabled)
+		return;
+
 	for (Component* component : m_components)
 	{
 		if (component->getEnabled())
@@ -22,6 +25,9 @@ void GameEngine::GameObject::start()
 
 void GameEngine::GameObject::update(double deltaTime)
 {
+	if (!m_enabled)
+		return;
+
 	for (Component* component : m_components)
 	{
 		if (component->getEnabled())
@@ -33,6 +39,9 @@ void GameEngine::GameObject::update(double deltaTime)
 
 void GameEngine::GameObject::fixedUpdate()
 {
+	if (!m_enabled)
+		return;
+
 	for (Component* component : m_components)
 	{
 		if (component->getEnabled())
@@ -44,6 +53,9 @@ void GameEngine::GameObject::fixedUpdate()
 
 void GameEngine::GameObject::draw()
 {
+	if(!m_enabled)
+		return;
+
 	for (Component* component : m_components)
 	{
 		if (component->getEnabled())

@@ -1,7 +1,7 @@
 #include "CircleColliderComponent.h"
 #include "AABBColliderComponent.h"
 #include "GameEngine/TransformComponent.h"
-
+#include "GameGraphics/Gizmos.h"
 
 inline int clamp(int value, int min, int max)
 {
@@ -69,6 +69,6 @@ void GamePhysics::CircleColliderComponent::draw()
 
 	GameMath::Vector3 position = getOwner()->getTransform()->getGlobalPosition();
 
-	//RAYLIB_H::Vector3 newPos = { position.x, position.y, position.z };
-	//RAYLIB_H::DrawSphereWires(newPos, getRadius(), 32, 32, RAYLIB_H::GetColor(getColor()));
+	GameGraphics::Color4 color = GameGraphics::Color4::getColorHex(getColor());
+	GameGraphics::Gizmos::drawCircleLines({ position.x , position.y }, getRadius(), 32, color);
 }

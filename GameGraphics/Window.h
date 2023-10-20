@@ -1,4 +1,6 @@
 #pragma once
+#include <GameMath/Vector2.h>
+#include <GameGraphics/Color4.h>
 
 struct GLFWwindow;
 
@@ -21,10 +23,15 @@ namespace GameGraphics
 
 		void open();
 
-		void beginDrawing(unsigned int color = 0x000000FF);
+		void beginDrawing(GameGraphics::Color4 color = {0,0,0,1});
 		void endDrawing();
 
 		void close();
+
+		static GameMath::Vector2 convertToScreenPosition(GameMath::Vector2 position);
+		static GameMath::Vector2 convertToWorldPosition(float x, float y);
+
+		GLFWwindow* getWindowContext() { return m_window; }
 
 	private:
 		int m_width;

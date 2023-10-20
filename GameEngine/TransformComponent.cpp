@@ -33,14 +33,9 @@ void GameEngine::TransformComponent::setLocalRotation(GameMath::Vector3 rotation
 	m_rotation = rotation;
 }
 
-void GameEngine::TransformComponent::setLocalRotation(GameMath::Vector2 rotation)
+void GameEngine::TransformComponent::setLocalRotation(float rotation)
 {
-	m_rotation = GameMath::Vector3(rotation.x, rotation.y, 0.0f);
-}
-
-void GameEngine::TransformComponent::setLocalRotation(float x, float y)
-{
-	m_rotation = GameMath::Vector3(x, y, 0.0f);
+	m_rotation = GameMath::Vector3(0,0, rotation);
 }
 
 GameMath::Vector3 GameEngine::TransformComponent::getLocalRotation()
@@ -91,6 +86,12 @@ GameMath::Vector3 GameEngine::TransformComponent::getGlobalPosition()
 	return GameMath::Vector3(m_globalMatrix.m03, m_globalMatrix.m13, m_globalMatrix.m23);
 }
 
+GameMath::Vector2 GameEngine::TransformComponent::getGlobalPosition2D()
+{
+	updateMatrices();
+	return GameMath::Vector2(m_globalMatrix.m03, m_globalMatrix.m13);
+}
+
 GameMath::Vector3 GameEngine::TransformComponent::getGlobalScale()
 {
 	updateMatrices();
@@ -100,6 +101,13 @@ GameMath::Vector3 GameEngine::TransformComponent::getGlobalScale()
 	GameMath::Vector3 zAxis = GameMath::Vector3(m_globalMatrix.m02, m_globalMatrix.m12, m_globalMatrix.m22);
 
 	return GameMath::Vector3(xAxis.getMagnitude(), yAxis.getMagnitude(), zAxis.getMagnitude());
+}
+
+GameMath::Vector2 GameEngine::TransformComponent::getGlobalScale2D()
+{
+	GameMath::Vector3 scale = getGlobalScale();
+
+	return { scale.x, scale.y };
 }
 
 GameEngine::TransformComponent* GameEngine::TransformComponent::getParent()

@@ -136,7 +136,7 @@ void GamePhysics::RigidBodyComponent::fixedUpdate()
 	GameMath::Vector3 position = getOwner()->getTransform()->getLocalPosition();
 	getOwner()->getTransform()->setLocalPosition(position + getVelocity3D() * GameEngine::Engine::getFixedDeltaTime());
 
-	applyForce(GameMath::Vector3(0, getGravity(), 0));
+	applyForce(GameMath::Vector3(0, -getGravity(), 0));
 }
 
 float GamePhysics::RigidBodyComponent::getMass()
